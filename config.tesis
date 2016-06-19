@@ -1,0 +1,6 @@
+org.sqlite.JDBC
+jdbc:sqlite:tesis.s3db
+
+
+sun.jdbc.odbc.JdbcOdbcDriver
+jdbc:odbc:Tesis
