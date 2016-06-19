@@ -13,6 +13,7 @@ import java.sql.SQLException;
 
 import javax.swing.JOptionPane;
 
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import client.Cliente;
@@ -59,7 +60,14 @@ public class MainController extends Cliente implements ActionListener, WindowLis
 		this.examenAltaCambioController= null;
 	}
 	
-	private void accesar(String result)throws ExceptionModel, BaseDatosExceptionModel, SQLException{
+	private void cambiarTablaMateriaEnAlumno(JSONObject json){
+		JSONArray jsonArray= (JSONArray) json.get("contenido");
+		this.tableroAlumnoController.crearTabla(new String[][] {
+			(String[]) jsonArray.toArray()
+		}, new String[] {"Materia", "Descripción", "Calificación"});
+	}
+	
+	private void accesar(String result)throws ExceptionModel, BaseDatosExceptionModel, SQLException, IOException{
 		switch(result){
 			case "profesor":
 				this.destruirAccesoController();
@@ -67,9 +75,8 @@ public class MainController extends Cliente implements ActionListener, WindowLis
 			break;
 			case "alumno":
 				this.destruirAccesoController();
-				this.tableroAlumnoController= new TableroAlumnoController(this, new String[][] {
-									{"Biología", "Parcial 1", "10.00"}
-								}, new String[] {"Materia", "Descripción", "Calificación"});
+				this.tableroAlumnoController= new TableroAlumnoController(this, null, null);
+				super.enviarMsg(this.tableroAlumnoController.funcionalidadPedirMaterias());
 			break;
 			default: throw new ExceptionModel(ExceptionModel.DATOS_DE_ACCESO_INCORRECTOS);
 		}

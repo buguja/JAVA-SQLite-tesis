@@ -8,6 +8,8 @@ import java.sql.SQLException;
 import java.util.LinkedList;
 import javax.swing.JOptionPane;
 import javax.swing.JTextArea;
+
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import controllers.BaseDatosController;
@@ -26,8 +28,22 @@ public class Hilo implements Runnable{
     }
     
     private void interpretarEntrada(String recibido) throws IOException, BaseDatosExceptionModel, SQLException{
-    	////out.writeUTF("Hola cliente he recibido tu mensaje.\n Te lo compruebo, mira: " + recibido);
     	JSONObject json= Tool.stringToJSON(recibido);
+    	String result= "";
+    	
+    	switch(json.get("metodo").toString()){
+	    	case "iniciarSesion":
+	    		result= iniciarSesion(json);
+	    	break;
+	    	case "consultarMateriasDelAlumno":
+	    		result= iniciarSesion(json);
+	    	break;
+    	}
+    	
+		out.writeUTF(result);
+    }
+    
+    private String iniciarSesion(JSONObject json) throws BaseDatosExceptionModel, SQLException{
     	BaseDatosController baseDatosController= new BaseDatosController();
     	String resultBd= baseDatosController.consultarUsuario(
 				json.get("usuario").toString(),
@@ -38,7 +54,18 @@ public class Hilo implements Runnable{
     	json.put("metodo", "accederComo");
     	json.put("resultadoMetodo", resultBd);
     	
-		out.writeUTF(json.toJSONString());
+    	return json.toJSONString();
+    }
+    
+    private String consultarMateriasDelAlumno(){
+    	JSONObject jsonObject= new JSONObject();
+    	JSONArray jsonArray= new JSONArray();
+    	jsonArray.add("Biología");
+    	jsonArray.add("Parcial 1");
+    	jsonArray.add("10.00");
+    	json.put("contenido", )
+
+    	return null;
     }
     
     public void run() {

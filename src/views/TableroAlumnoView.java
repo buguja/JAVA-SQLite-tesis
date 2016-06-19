@@ -63,7 +63,8 @@ public class TableroAlumnoView extends JFrame {
 		contentPane.setLayout(new BorderLayout(0, 0));
 		setContentPane(contentPane);
 		
-		crearTabla(contenido, titulos);
+		table= new JTable();
+		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		
 		scrollPane = new JScrollPane();
 		scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
@@ -74,8 +75,6 @@ public class TableroAlumnoView extends JFrame {
 	}
 	
 	public void crearTabla(String[][] contenido, String[] titulos){
-		table= new JTable();
 		table.setModel(new DefaultTableModel(contenido, titulos));
-		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 	}
 }

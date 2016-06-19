@@ -6,6 +6,9 @@ import java.awt.event.ActionListener;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 
+import org.json.simple.JSONObject;
+
+import models.Tool;
 import views.TableroAlumnoView;
 
 public class TableroAlumnoController extends TableroAlumnoView{
@@ -48,5 +51,12 @@ public class TableroAlumnoController extends TableroAlumnoView{
 	
 	public void cerrarVentana(){
 		super.dispose();
+	}
+
+	public String funcionalidadPedirMaterias() {
+		JSONObject json= new JSONObject();
+		json.put("metodo", "consultarMateriasDelAlumno");
+		
+		return json.toJSONString();
 	}
 }
