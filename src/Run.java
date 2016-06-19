@@ -1,6 +1,8 @@
 
 import java.io.IOException;
 
+import javax.swing.JOptionPane;
+
 import client.Cliente;
 import controllers.MainController;
 import models.BaseDatosExceptionModel;
@@ -24,7 +26,7 @@ public class Run {
 			);
 			clientThread.start();
 		} catch (IOException | BaseDatosExceptionModel e) {
-			e.printStackTrace();
+			JOptionPane.showMessageDialog(null, e.getMessage());
 		}
 	}
 }
