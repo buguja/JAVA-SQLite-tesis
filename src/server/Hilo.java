@@ -55,8 +55,10 @@ public class Hilo implements Runnable{
                 }*/
                interpretarEntrada(recibido);
             }
-        } catch (IOException | BaseDatosExceptionModel | SQLException e) {
+        } catch (BaseDatosExceptionModel | SQLException e) {
         	System.out.println("Error en Hilo.java: " + e.getMessage());
+        } catch(IOException e){
+        	JOptionPane.showMessageDialog(null, "Cliente, cerró la conexión");
         }
     }
 }
