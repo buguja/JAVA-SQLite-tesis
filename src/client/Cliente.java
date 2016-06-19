@@ -17,7 +17,7 @@ public class Cliente {
     protected DataInputStream in;
     private DataOutputStream out;
     private int puerto = 2027;
-    private String host = "localhost";
+    private String host = "192.168.43.100";
     protected String mensajes = "";
     
     public Cliente() throws UnknownHostException, IOException{
@@ -26,7 +26,7 @@ public class Cliente {
         out = new DataOutputStream(cliente.getOutputStream());
     }
     
-    //Funcion sirve para enviar mensajes al servidor
+    //Funcion sirve para enviar mensajes al servidors
     public void enviarMsg(String msg) throws IOException{
     	out.writeUTF(msg);
     }
