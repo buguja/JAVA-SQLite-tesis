@@ -1,5 +1,5 @@
-tipoApp.data
 bin/
-.classpath
 .settings/
+.classpath
 .project
+tipoApp.data

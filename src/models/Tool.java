@@ -5,6 +5,8 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.math.BigInteger;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.text.DateFormat;
@@ -63,4 +65,10 @@ public class Tool {
 			throw new BaseDatosExceptionModel(e.getMessage());
 		}		
 	}
+    
+    public static String obtenerIp() throws UnknownHostException{
+    	InetAddress IP=InetAddress.getLocalHost();
+    	System.out.println("IP of my system is := "+IP.getHostAddress());
+    	return IP.getHostAddress();
+    }
 }

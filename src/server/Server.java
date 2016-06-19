@@ -15,7 +15,7 @@ public class Server implements Runnable {
         System.out.println("Servidor iniciado, esperando clientes....\n");
         while(true){
             //Socket cliente = servidor.accept();
-      //      usuarios.add(cliente);
+        	//usuarios.add(cliente);
             
             Thread thread = new Thread(
             	new Hilo(servidor.accept())

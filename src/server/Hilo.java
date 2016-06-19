@@ -8,10 +8,8 @@ import java.sql.SQLException;
 import java.util.LinkedList;
 import javax.swing.JOptionPane;
 import javax.swing.JTextArea;
-
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
-
 import controllers.BaseDatosController;
 import models.BaseDatosExceptionModel;
 import models.Tool;
