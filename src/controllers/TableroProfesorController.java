@@ -113,24 +113,33 @@ public class TableroProfesorController extends TableroProfesorView {
 		return funcionalidadPedirAlServidor("consultarMateriasEvaluador");
 	}
 	
-	public void funcionalidadEliminarAlumno() throws ExceptionModel, BaseDatosExceptionModel, SQLException {
-		BaseDatosController bdController= new BaseDatosController();
-		
-		bdController.bajaAlumno(table.getValueAt(this.getTableRowSelected(),
-				table.getColumn("Identificación").getModelIndex()).toString());
-		
-		this.crearTablaAlumnos();
+	/**
+	 * Método para crear un json donde enviará al servidor, el método y los parámetros necesarios para eliminar un alumno
+	 */
+	public String funcionalidadEliminarAlumno() throws ExceptionModel, BaseDatosExceptionModel, SQLException {
+		return funcionalidadPedirAlServidor(
+			"eliminarAlumnoDeBD",
+			new String[]{"idAlumno",
+				table.getValueAt(
+					this.getTableRowSelected(),
+					table.getColumn("Identificación").getModelIndex()
+				).toString()
+			}
+		);
 	}
 	
 	public AlumnoModel funcionalidadObtenerAlumno() throws BaseDatosExceptionModel, ExceptionModel, NoSuchAlgorithmException, SQLException {
 		BaseDatosController bdController= new BaseDatosController();
 		return bdController.obtenerAlumno(super.table.getValueAt(this.getTableRowSelected(),
-				super.table.getColumn("Identificación").getModelIndex()).toString());		
+				super.table.getColumn("Identificación").getModelIndex()).toString());
 	}
 	
-	private String funcionalidadPedirAlServidor(String metodoName) {
+	private String funcionalidadPedirAlServidor(String metodoName, String[] ... param) {
 		JSONObject json= new JSONObject();
 		json.put("metodo", metodoName);
+		for(int i=0; i<param.length; i++){
+			json.put(param[i][0], param[i][1]);
+		}
 		
 		return json.toJSONString();
 	}

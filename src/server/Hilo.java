@@ -51,12 +51,23 @@ public class Hilo implements Runnable{
 	    	case "consultarAlumnosEvaluador":
 	    		result= consultarAlumnosEvaluador();
 	    	break;
+	    	case "eliminarAlumnoDeBD":
+	    		result= eliminarAlumnoDeBD(json);
+	    	break;
     	}
     	
 		out.writeUTF(result);
     }
     
-    private String consultarMateriasEvaluador() throws BaseDatosExceptionModel {
+    private String eliminarAlumnoDeBD(JSONObject json) throws BaseDatosExceptionModel, SQLException {
+    	BaseDatosController bdController= new BaseDatosController();
+		
+		bdController.bajaAlumno(json.get("idAlumno").toString());
+		
+		return consultarAlumnosEvaluador();
+	}
+
+	private String consultarMateriasEvaluador() throws BaseDatosExceptionModel {
     	JSONObject jsonObject= new JSONObject();
     	BaseDatosController baseDatosController= new BaseDatosController();
     	String[][] datos= baseDatosController.obtenerExamenes();

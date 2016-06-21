@@ -166,11 +166,13 @@ public class MainController extends Cliente implements ActionListener, WindowLis
 		}else if(source == this.tableroProfesorController.getMntmEditarAlumno()){
 			//Menu item. Editar alumno
 			this.alumnoController= new AlumnoController(this, this,
-					this.tableroProfesorController.funcionalidadObtenerAlumno(),
-					true);
+				this.tableroProfesorController.funcionalidadObtenerAlumno(),
+			true);
 		}else if(source == this.tableroProfesorController.getMntmEliminarAlumno()){
 			//Menu item. Eliminar alumno
-			this.tableroProfesorController.funcionalidadEliminarAlumno();
+			super.enviarMsg(
+				this.tableroProfesorController.funcionalidadEliminarAlumno()
+			);
 		}else if(source == this.tableroProfesorController.getMntmNuevoAlumno()){
 			//Menu item. Nuevo alumno
 			this.alumnoController= new AlumnoController(this, this);
@@ -178,8 +180,8 @@ public class MainController extends Cliente implements ActionListener, WindowLis
 			//Menu item. Ver alumno
 			//BaseDatosController bdController= new BaseDatosController();
 			this.alumnoController= new AlumnoController(this, this, 
-					this.tableroProfesorController.funcionalidadObtenerAlumno(), 
-					false);
+				this.tableroProfesorController.funcionalidadObtenerAlumno(), 
+			false);
 		}else if(source == this.tableroProfesorController.getMntmCrearPdfExamen()){
 			//Menu item crear pdf
 			System.out.println("Crear PDF examen");
