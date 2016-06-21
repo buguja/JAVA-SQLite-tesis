@@ -111,7 +111,7 @@ public class TableroProfesorView extends JFrame {
 		setVisible(true);
 	}
 	
-	public void agregarContenidoTabla(String[][] contenido, String[] titulos){
+	public void agregarContenidoTabla(Object[][] contenido, Object[] titulos){
 		table.setModel(new DefaultTableModel(contenido, titulos));
 	}
 }

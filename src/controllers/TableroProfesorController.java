@@ -6,6 +6,8 @@ import java.sql.SQLException;
 
 import javax.swing.JMenuItem;
 
+import org.json.simple.JSONObject;
+
 import models.AlumnoModel;
 import models.BaseDatosExceptionModel;
 import models.ExceptionModel;
@@ -95,20 +97,20 @@ public class TableroProfesorController extends TableroProfesorView {
 		return rowTable;
 	}
 	
-	public void crearTablaAlumnos() throws BaseDatosExceptionModel, SQLException{
-		BaseDatosController bDController= new BaseDatosController();
-		super.agregarContenidoTabla(bDController.obtenerListaAlumnos(), 
-				new String[] {"Nombre completo", "Grupo", "Identificación"});
+	public String crearTablaAlumnos() throws BaseDatosExceptionModel, SQLException{
 		super.mnAlumno.setEnabled(true);
 		super.mnExamen.setEnabled(false);
+		return funcionalidadPedirAlServidor("consultarAlumnosEvaluador");
 	}
 	
-	public void crearTablaExamenes() throws BaseDatosExceptionModel, SQLException{
-		BaseDatosController baseDatosController= new BaseDatosController();
-		super.agregarContenidoTabla(baseDatosController.obtenerExamenes(), 
-				new String[] {"Materia", "Descripción", "Calificación"});
+	/**
+	 * Modifica el contenido de la tabla, además, activa el menu examen y desactiva el menu alumno
+	 * @return json del metodo a activar en el servidor
+	 */
+	public String crearTablaExamenes() throws BaseDatosExceptionModel, SQLException{
 		super.mnExamen.setEnabled(true);
 		super.mnAlumno.setEnabled(false);
+		return funcionalidadPedirAlServidor("consultarMateriasEvaluador");
 	}
 	
 	public void funcionalidadEliminarAlumno() throws ExceptionModel, BaseDatosExceptionModel, SQLException {
@@ -126,6 +128,12 @@ public class TableroProfesorController extends TableroProfesorView {
 				super.table.getColumn("Identificación").getModelIndex()).toString());		
 	}
 	
+	private String funcionalidadPedirAlServidor(String metodoName) {
+		JSONObject json= new JSONObject();
+		json.put("metodo", metodoName);
+		
+		return json.toJSONString();
+	}
 	/*public AlumnoModel funcionalidadMostrarAlumno() throws BaseDatosExceptionModel, ExceptionModel, NoSuchAlgorithmException, SQLException {
 		BaseDatosController bdController= new BaseDatosController();
 		return bdController.obtenerAlumno(super.table.getValueAt(this.getTableRowSelected(),

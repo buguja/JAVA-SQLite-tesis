@@ -45,12 +45,52 @@ public class Hilo implements Runnable{
 	    	case "consultarMateriasDelAlumno":
 	    		result= consultarMateriasDelAlumno();
 	    	break;
+	    	case "consultarMateriasEvaluador":
+	    		result= consultarMateriasEvaluador();
+	    	break;
+	    	case "consultarAlumnosEvaluador":
+	    		result= consultarAlumnosEvaluador();
+	    	break;
     	}
     	
 		out.writeUTF(result);
     }
     
-    private String iniciarSesion(JSONObject json) throws BaseDatosExceptionModel, SQLException{
+    private String consultarMateriasEvaluador() throws BaseDatosExceptionModel {
+    	JSONObject jsonObject= new JSONObject();
+    	BaseDatosController baseDatosController= new BaseDatosController();
+    	String[][] datos= baseDatosController.obtenerExamenes();
+    	ArrayList<ArrayList> aList = new ArrayList<ArrayList>();
+    	
+    	jsonObject.put("metodo", "cambiarDatosTablaMateriaEnEvaluador");
+    	
+    	for(int i=0; i<datos.length; i++){
+    		aList.add(new ArrayList<String>(asList(datos[i][0], datos[i][1], datos[i][2])));
+    	}
+    	
+    	jsonObject.put("contenido", aList);
+    	
+    	return jsonObject.toJSONString();
+	}
+    
+    private String consultarAlumnosEvaluador() throws BaseDatosExceptionModel, SQLException{
+    	JSONObject jsonObject= new JSONObject();
+    	BaseDatosController baseDatosController= new BaseDatosController();
+    	String[][] datos= baseDatosController.obtenerListaAlumnos();
+    	ArrayList<ArrayList> aList = new ArrayList<ArrayList>();
+    	
+    	jsonObject.put("metodo", "cambiarDatosTablaAlumnoEnEvaluador");
+    	
+    	for(int i=0; i<datos.length; i++){
+    		aList.add(new ArrayList<String>(asList(datos[i][0], datos[i][1], datos[i][2])));
+    	}
+    	
+    	jsonObject.put("contenido", aList);
+    	
+    	return jsonObject.toJSONString();
+    }
+
+	private String iniciarSesion(JSONObject json) throws BaseDatosExceptionModel, SQLException{
     	BaseDatosController baseDatosController= new BaseDatosController();
     	String resultBd= baseDatosController.consultarUsuario(
 				json.get("usuario").toString(),
@@ -71,10 +111,8 @@ public class Hilo implements Runnable{
     	jsonObject.put("contenido", new ArrayList<ArrayList>(asList(
     			new ArrayList<String>(asList("Biología", "Parcial 1", "10.00")),
     			new ArrayList<String>(asList("Español", "Parcial 3", "8.00"))
-    	))); //Object
+    	))); 
     	
-    	//System.out.println(jsonObject.toJSONString());
-
     	return jsonObject.toJSONString();
     }
     

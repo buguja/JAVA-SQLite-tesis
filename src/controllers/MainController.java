@@ -60,7 +60,12 @@ public class MainController extends Cliente implements ActionListener, WindowLis
 		this.examenAltaCambioController= null;
 	}
 	
-	private void cambiarTablaMateriaEnAlumno(JSONObject json){	
+	/**
+	 * Convierte el json recibido a una matriz de objeto
+	 * @param json objeto tipo json recibido
+	 * @return matriz de objeto[][]
+	 */
+	private Object[][] convertirJsonEnMatriz(JSONObject json){
 		JSONArray jsonArray= (JSONArray) json.get("contenido");
 		JSONArray tmp= null;
 		Object[][] contenido= null;
@@ -70,8 +75,37 @@ public class MainController extends Cliente implements ActionListener, WindowLis
 			tmp= (JSONArray) jsonArray.get(i);
 			contenido[i]= tmp.toArray();
 		}
-		
-		this.tableroAlumnoController.crearTabla(contenido, new String[] {"Materia", "Descripción", "Calificación"});
+		return contenido;
+	}
+	
+	/**
+	 * Cambia el contenido de la tabla en el tablero del alumno
+	 * @param json Objeto con el contenido de la tabla
+	 */
+	private void cambiarTablaMateriaEnAlumno(JSONObject json){		
+		this.tableroAlumnoController.crearTabla(
+				convertirJsonEnMatriz(json), new String[] {"Materia", "Descripción", "Calificación"}
+		);
+	}
+	
+	/**
+	 * cambia el contenido de la tabla materias, en el tablero del profesor
+	 * @param json Objeto con el contenido de la tabla
+	 */
+	private void cambiarTablaMateriaEnEvaluador(JSONObject json){
+		this.tableroProfesorController.agregarContenidoTabla(
+			convertirJsonEnMatriz(json), new String[] {"Nombre completo", "Grupo", "Identificación"} 
+		);
+	}
+	
+	/**
+	 * Cambia el contenido de la tabla alumnos, en el tablero del profesor
+	 * @param json Objeto con el contenido de la tabla
+	 */
+	private void cambiarDatosTablaAlumnoEnEvaluador(JSONObject json) {
+		this.tableroProfesorController.agregarContenidoTabla(
+			convertirJsonEnMatriz(json), new String[] {"Nombre completo", "Grupo", "Identificación"} 
+		);
 	}
 	
 	private void accesar(String result)throws ExceptionModel, BaseDatosExceptionModel, SQLException, IOException{
@@ -79,6 +113,9 @@ public class MainController extends Cliente implements ActionListener, WindowLis
 			case "profesor":
 				this.destruirAccesoController();
 				this.tableroProfesorController= new TableroProfesorController(this);
+				super.enviarMsg(
+					this.tableroProfesorController.crearTablaExamenes()
+				);
 			break;
 			case "alumno":
 				this.destruirAccesoController();
@@ -121,7 +158,7 @@ public class MainController extends Cliente implements ActionListener, WindowLis
 		}*/
 	}
 	
-	private void accionEventosTableroProfesor(Object source) throws BaseDatosExceptionModel, SQLException, ExceptionModel, NoSuchAlgorithmException{
+	private void accionEventosTableroProfesor(Object source) throws BaseDatosExceptionModel, SQLException, ExceptionModel, NoSuchAlgorithmException, IOException{
 		// TABLERO - PROFESOR
 		if(source == this.tableroProfesorController.getMntmSalir()){
 			this.destruirTableroProfesorController();
@@ -161,9 +198,14 @@ public class MainController extends Cliente implements ActionListener, WindowLis
 			System.out.println("Detalles examen");
 		}else if(source == this.tableroProfesorController.getMntmAlumnos()){
 			//Menu item ver alumnos
-			this.tableroProfesorController.crearTablaAlumnos();
+			super.enviarMsg(
+				this.tableroProfesorController.crearTablaAlumnos()
+			);
 		}else if(source == this.tableroProfesorController.getMntmExamenes()){
-			this.tableroProfesorController.crearTablaExamenes();
+			//Menu item ver examenes
+			super.enviarMsg(
+				this.tableroProfesorController.crearTablaExamenes()
+			);
 		}else if(source == this.tableroProfesorController.getMntmManualDeUsuario()){
 			System.out.println("Manual de usuario");
 		}
@@ -223,6 +265,12 @@ public class MainController extends Cliente implements ActionListener, WindowLis
 					break;
 					case "cambiarDatosTablaMateriaEnAlumno":
 						this.cambiarTablaMateriaEnAlumno(json);
+					break;
+					case "cambiarDatosTablaMateriaEnEvaluador":
+						cambiarTablaMateriaEnEvaluador(json);
+					break;
+					case "cambiarDatosTablaAlumnoEnEvaluador":
+						cambiarDatosTablaAlumnoEnEvaluador(json);
 					break;
 				}
         	}catch (IOException | ExceptionModel | BaseDatosExceptionModel | SQLException e) {
