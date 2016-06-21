@@ -60,11 +60,18 @@ public class MainController extends Cliente implements ActionListener, WindowLis
 		this.examenAltaCambioController= null;
 	}
 	
-	private void cambiarTablaMateriaEnAlumno(JSONObject json){
+	private void cambiarTablaMateriaEnAlumno(JSONObject json){	
 		JSONArray jsonArray= (JSONArray) json.get("contenido");
-		this.tableroAlumnoController.crearTabla(new String[][] {
-			(String[]) jsonArray.toArray()
-		}, new String[] {"Materia", "Descripción", "Calificación"});
+		JSONArray tmp= null;
+		Object[][] contenido= null;
+		
+		contenido= new Object[jsonArray.size()][];
+		for(int i=0; i<jsonArray.size(); i++){
+			tmp= (JSONArray) jsonArray.get(i);
+			contenido[i]= tmp.toArray();
+		}
+		
+		this.tableroAlumnoController.crearTabla(contenido, new String[] {"Materia", "Descripción", "Calificación"});
 	}
 	
 	private void accesar(String result)throws ExceptionModel, BaseDatosExceptionModel, SQLException, IOException{
@@ -207,18 +214,20 @@ public class MainController extends Cliente implements ActionListener, WindowLis
 	}
 	
 	public void run() {
-       try {
-        	while(true){
+    	while(true){
+    		try {
 				JSONObject json= Tool.stringToJSON(super.in.readUTF());
 				switch(json.get("metodo").toString()){
 					case "accederComo":
 						this.accesar(json.get("resultadoMetodo").toString());
 					break;
-						
+					case "cambiarDatosTablaMateriaEnAlumno":
+						this.cambiarTablaMateriaEnAlumno(json);
+					break;
 				}
-        	}
-		} catch (IOException | ExceptionModel | BaseDatosExceptionModel | SQLException e) {
-			JOptionPane.showMessageDialog(null, e.getMessage());
+        	}catch (IOException | ExceptionModel | BaseDatosExceptionModel | SQLException e) {
+    			JOptionPane.showMessageDialog(null, e.getMessage());
+    		}
 		}
     }
 

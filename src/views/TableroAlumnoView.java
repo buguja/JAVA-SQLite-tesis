@@ -74,7 +74,7 @@ public class TableroAlumnoView extends JFrame {
 		setVisible(true);
 	}
 	
-	public void crearTabla(String[][] contenido, String[] titulos){
+	public void crearTabla(Object[][] contenido, String[] titulos){
 		table.setModel(new DefaultTableModel(contenido, titulos));
 	}
 }

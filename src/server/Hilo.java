@@ -1,11 +1,18 @@
 package server;
 
+import static java.util.Arrays.asList;
+
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.net.Socket;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.LinkedList;
+import java.util.Vector;
+
 import javax.swing.JOptionPane;
 import javax.swing.JTextArea;
 
@@ -36,7 +43,7 @@ public class Hilo implements Runnable{
 	    		result= iniciarSesion(json);
 	    	break;
 	    	case "consultarMateriasDelAlumno":
-	    		result= iniciarSesion(json);
+	    		result= consultarMateriasDelAlumno();
 	    	break;
     	}
     	
@@ -59,13 +66,16 @@ public class Hilo implements Runnable{
     
     private String consultarMateriasDelAlumno(){
     	JSONObject jsonObject= new JSONObject();
-    	JSONArray jsonArray= new JSONArray();
-    	jsonArray.add("Biología");
-    	jsonArray.add("Parcial 1");
-    	jsonArray.add("10.00");
-    	json.put("contenido", )
+    	
+    	jsonObject.put("metodo", "cambiarDatosTablaMateriaEnAlumno");
+    	jsonObject.put("contenido", new ArrayList<ArrayList>(asList(
+    			new ArrayList<String>(asList("Biología", "Parcial 1", "10.00")),
+    			new ArrayList<String>(asList("Español", "Parcial 3", "8.00"))
+    	))); //Object
+    	
+    	//System.out.println(jsonObject.toJSONString());
 
-    	return null;
+    	return jsonObject.toJSONString();
     }
     
     public void run() {
@@ -83,7 +93,7 @@ public class Hilo implements Runnable{
                interpretarEntrada(recibido);
             }
         } catch (BaseDatosExceptionModel | SQLException e) {
-        	System.out.println("Error en Hilo.java: " + e.getMessage());
+        	JOptionPane.showMessageDialog(null, "Error en Hilo.java: " + e.getMessage());
         } catch(IOException e){
         	JOptionPane.showMessageDialog(null, "Cliente, cerró la conexión");
         }

@@ -15,9 +15,9 @@ public class Cliente {
     private Socket cliente;
     protected DataInputStream in;
     private DataOutputStream out;
-    private int puerto = 2027;
-    private String host = "192.168.43.100";
-    protected String mensajes = "";
+    private int puerto= 2027;
+    private String host= "192.168.20.145";
+    protected String mensajes= "";
     
     public Cliente() throws UnknownHostException, IOException{
         cliente = new Socket(host,puerto);
